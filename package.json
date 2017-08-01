@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/zdurham/flashcard-generator#readme",
   "dependencies": {
+    "chalk": "^2.0.1",
     "inquirer": "^3.2.1",
     "jsonfile": "^3.0.1"
   }
