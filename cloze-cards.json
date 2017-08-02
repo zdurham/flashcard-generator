@@ -1,7 +1,17 @@
 [
   {
     "type": "Cloze",
-    "fullText": "George Washington was the first president of the US",
+    "fullText": "George Washington was the first president of the United States",
     "cloze": "George Washington"
+  },
+  {
+    "type": "Cloze",
+    "fullText": "Akira Kurosawa directed The Hidden Fortress",
+    "cloze": "Akira Kurosawa"
+  },
+  {
+    "type": "Cloze",
+    "fullText": "John Adams was the second president of the US",
+    "cloze": "John Adams"
   }
 ]

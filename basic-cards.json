@@ -1,38 +1,22 @@
 [
   {
-    "front": "dfsdfasf",
-    "back": "adnf;oasdfn"
-  },
-  {
-    "front": "sfoiashfoubwebwf",
-    "back": "afsdfjbwniehfnowienf[qoweifbn[woebfwebfsbf;sdjf"
-  },
-  {
-    "front": "fasfnsdfb",
-    "back": "adsfusdfsdf"
-  },
-  {
-    "front": "s'dfknsadf",
-    "back": "asfaosdbfosdb"
+    "type": "Basic",
+    "front": "Who was the first US President?",
+    "back": "George Washington"
   },
   {
     "type": "Basic",
-    "front": "lfhsdfgs",
-    "back": "asldjfhalsdfg"
+    "front": "Who was the 44th President of the United States?",
+    "back": "Barack Obama"
   },
   {
     "type": "Basic",
-    "front": "aflsdjhfasdhf",
-    "back": "asldjfbalsjfbasdbf"
+    "front": "Who directed E.T.?",
+    "back": "Steven Spielberg"
   },
   {
     "type": "Basic",
-    "front": "afsadfh",
-    "back": "asjdflasdbf"
-  },
-  {
-    "type": "Basic",
-    "front": "ssnrsnytsjytdk",
-    "back": "gfjsjytdkiyfkd"
+    "front": "This individual directed The Hidden Fortress",
+    "back": "Akira Kurosawa"
   }
 ]

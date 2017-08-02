@@ -5,14 +5,20 @@ var inquirer = require('inquirer')
 var fs = require('fs')
 var chalk = require('chalk')
 // Card decks
-var basicJSON = require('./basic-cards.json')
-var clozeJSON = require('./cloze-cards.json')
-var fullDeck = basicJSON.concat(clozeJSON)
+var clozeJSON = require('./cloze-cards.json');
+var basicJSON = require('./basic-cards.json');
+
+
+
+// These variables must be global for the readDeck function to work
+var cardCounter = 0;
+var correct = 0;
+var incorrect = 0;
 
 
 // Program should allow the user to:
 // 1.) Create Cards --> DONE
-// 2.) Read cards back (perhaps also with the ability to use just basic or just cloze cards)
+// 2.) Read cards back (perhaps also with the ability to use just basic or just cloze cards) --> Works for basic, but not cloze?
 // Program goals beyond that:
 // 1.) Ability to delete cards
 // 2.) Ability to shuffle card deck
@@ -30,18 +36,31 @@ function menu() {
       "name": "menuChoice",
       "message": "Welcome to my flash-card generator. Please select an option below to begin.",
       "type": "list",
-      "choices": ["Create a card", "Test through a full deck", "Test using only basic cards", "Test using only cloze cards", "Pick a random card", "Exit" ]
+      "choices": ["Create a card", "Test using basic cards", "Test using cloze cards", "Pick a random card", "Exit" ]
     }
-  ]).then(function(answer) {
+  ]).then(function(answer, err) {
+    if (err) {
+      console.log("Something went wrong: " + err)
+    }
     let delay;
     switch(answer.menuChoice) {
       case "Create a card":
         console.log("Alright, let's make a new card!");
         delay = setTimeout(createCard, 1000);
         break;
-      case "Test through a full deck":
-        console.log("This deck will contain all basic and cloze cards. Good luck!")
-        readDeck();
+      case "Test using basic cards":
+        console.log("This deck will contain only basic cards. Good luck!")
+        readDeck(basicJSON);
+        break;
+      case "Test using cloze cards":
+        console.log("This deck will contain only cloze cards. Good luck!");  
+        readDeck(clozeJSON);
+        break;
+      case "Pick a random card":
+        console.log("Picking a random card.")
+        break;
+      case "Exit":
+        console.log("Exiting the program.")
         break;
     }
   })
@@ -163,14 +182,11 @@ function getCard(card) {
 }
 
 // Function to read the cards
-function readDeck() {
-  var cardCounter = 0;
-  var correct = 0;
-  var incorrect = 0;
+function readDeck(deck) {
   // A counter will be used to determine if all cards have been used
-  if (cardCounter < fullDeck.length) {
+  if (cardCounter < deck.length) {
     // This variable grabs the current card
-    var cardInPlay = getCard(fullDeck[cardCounter])
+    var cardInPlay = getCard(deck[cardCounter])
     inquirer.prompt([
       {
         "name": "question",
@@ -180,37 +196,49 @@ function readDeck() {
     ]).then(function(answer) {
       //Determine cloze card or basic card again for comparison
       // If cloze card, then do the following
-      if (fullDeck[cardCounter].cloze !== undefined) {
-        if (answer.question === fullDeck[cardCounter].cloze) {
+      if (deck[cardCounter].cloze !== undefined) {
+        if (answer.question === deck[cardCounter].cloze) {
           console.log("You have answered correctly!")
           correct++
         }
         
         else {
           console.log("You answered incorrectly.")
-          console.log("The answer was: " + fullDeck[cardCounter.fullText])
+          console.log("The answer was: " + deck[cardCounter.fullText])
           incorrect++
         }
       }
       else {
-        if (answer.question === fullDeck[cardCounter].back) {
+        if (answer.question === deck[cardCounter].back) {
           console.log("You have answered correctly!")
           correct++
         }
         else {
           console.log("You answered incorrectly.")
-          console.log("The answer was: " + fullDeck[cardCounter].front)
+          console.log("The answer was: " + deck[cardCounter].back)
           incorrect++
         }
       }
       cardCounter++
-      readDeck()
-    }) 
+      readDeck(deck)
+    });
   }
   else {
     console.log("You have completed the full deck.")
     console.log("You answered " + correct + " correctly.")
     console.log("You answered " + incorrect + " incorrectly.")
+    console.log("----------------------------------------------")
+    console.log("Returning to the main menu.")
+    correct = 0;
+    incorrect = 0;
+    cardCounter = 0;
+    let delay = setTimeout(menu, 1000)
   }
 }
 
+/* if (text.split(cloze)[1] === undefined) {
+    console.log('Your answer text was not found in the sentence. Please make sure your cloze content is in the text.')
+    console.log('------------------------------')
+    return
+  }
+  */
