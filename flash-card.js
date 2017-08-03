@@ -8,8 +8,7 @@ var chalk = require('chalk')
 var clozeJSON = require('./cloze-cards.json');
 var basicJSON = require('./basic-cards.json');
 var fullDeck = basicJSON.concat(clozeJSON)
-console.log(fullDeck)
-console.log(fullDeck.length)
+
 
 
 // These variables must be global for the readDeck function to work
@@ -310,11 +309,11 @@ function showCards(deck) {
       }
       // basic case
       else {
-        console.log(chalk.bgBlack("-------------BASIC CARD-------------"))
+        console.log(chalk.bgBlack("--------------------------BASIC CARD--------------------------"))
         console.log(chalk.blue("Position in deck: ") + x )
-        console.log(chalk.bgBlack("----------------FRONT---------------"))
+        console.log(chalk.bgBlack("----------------------------FRONT-----------------------------"))
         console.log(chalk.blue(deck[x].front))
-        console.log(chalk.bgBlack("----------------BACK----------------"))
+        console.log(chalk.bgBlack("-----------------------------BACK-----------------------------"))
         console.log(chalk.blue(deck[x].back))
         console.log(chalk.bgBlack("--------------------------------------------------------------" + "\n"))
       }
