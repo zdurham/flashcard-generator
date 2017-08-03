@@ -13,5 +13,10 @@
     "type": "Cloze",
     "fullText": "John Adams was the second president of the US",
     "cloze": "John Adams"
+  },
+  {
+    "type": "Cloze",
+    "fullText": "Carrie Fischer played Princess Leia.",
+    "cloze": "Carrie Fischer"
   }
 ]

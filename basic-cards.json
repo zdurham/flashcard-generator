@@ -13,10 +13,5 @@
     "type": "Basic",
     "front": "Who directed E.T.?",
     "back": "Steven Spielberg"
-  },
-  {
-    "type": "Basic",
-    "front": "This individual directed The Hidden Fortress",
-    "back": "Akira Kurosawa"
   }
 ]

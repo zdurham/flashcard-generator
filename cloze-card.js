@@ -4,8 +4,7 @@ function ClozeCard(text, cloze) {
   this.cloze = cloze;
   this.partial = function() {
     let partialText = this.fullText.replace(this.cloze, "...")
-    console.log(partialText)
-    console.log('------------------------------')
+    return partialText
   }
 }
 
