@@ -1,22 +1,7 @@
 [
   {
     "type": "Cloze",
-    "fullText": "George Washington was the first president of the United States",
-    "cloze": "George Washington"
-  },
-  {
-    "type": "Cloze",
-    "fullText": "Akira Kurosawa directed The Hidden Fortress",
-    "cloze": "Akira Kurosawa"
-  },
-  {
-    "type": "Cloze",
-    "fullText": "John Adams was the second president of the US",
-    "cloze": "John Adams"
-  },
-  {
-    "type": "Cloze",
-    "fullText": "Carrie Fischer played Princess Leia.",
-    "cloze": "Carrie Fischer"
+    "fullText": "Kyle MachLachlan plays FBI Agent Dale Cooper in the 90s television series Twin Peaks.",
+    "cloze": "Dale Cooper"
   }
 ]

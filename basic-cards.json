@@ -1,17 +1,1 @@
-[
-  {
-    "type": "Basic",
-    "front": "Who was the first US President?",
-    "back": "George Washington"
-  },
-  {
-    "type": "Basic",
-    "front": "Who was the 44th President of the United States?",
-    "back": "Barack Obama"
-  },
-  {
-    "type": "Basic",
-    "front": "Who directed E.T.?",
-    "back": "Steven Spielberg"
-  }
-]
+[]

@@ -38,9 +38,9 @@ function menu() {
   inquirer.prompt([
     {
       "name": "menuChoice",
-      "message": "Welcome to my flash-card generator. Please select an option below to begin.",
+      "message": "Welcome to my flash-card generator. Please select an option below to begin." + "\n",
       "type": "list",
-      "choices": ["Create a card", "Test using the full deck", "Test using basic cards", "Test using cloze cards", "Show cards", "Exit" ]
+      "choices": [chalk.blueBright("Create a card"), chalk.blueBright("Test using the full deck"), chalk.blueBright("Test using basic cards"), chalk.blueBright("Test using cloze cards"), chalk.blueBright("Show cards"), chalk.blueBright("Exit")]
     }
   ]).then(function(answer, err) {
     if (err) {
@@ -48,26 +48,26 @@ function menu() {
     }
     let delay;
     switch(answer.menuChoice) {
-      case "Create a card":
+      case chalk.blueBright("Create a card"):
         console.log("Alright, let's make a new card!");
         createCard()
         break;
-      case "Test using the full deck":
+      case chalk.blueBright("Test using the full deck"):
         console.log("This deck will contain all cards, both basic and cloze. The deck has been shuffled.")
         readDeck(fullDeck)
-      case "Test using basic cards":
+      case chalk.blueBright("Test using basic cards"):
         console.log("This deck will contain only basic cards. Good luck!")
         readDeck(basicJSON);
         break;
-      case "Test using cloze cards":
+      case chalk.blueBright("Test using cloze cards"):
         console.log("This deck will contain only cloze cards. Good luck!");  
         readDeck(clozeJSON);
         break;
-      case "Show cards":
+      case chalk.blueBright("Show cards"):
         inquirer.prompt([
           {
             "name": "deckChoice",
-            "message": "Which deck would you like to inspect?",
+            "message": chalk.blue("Which deck would you like to inspect?"),
             "type": "list",
             "choices": ["Basic Deck", "Cloze Deck"]
           }
@@ -84,7 +84,7 @@ function menu() {
           }
         })
         break;
-      case "Exit":
+      case chalk.blueBright("Exit"):
         console.log("Exiting the program.")
         break;
     }
@@ -198,12 +198,11 @@ function createCard() {
 
 // Function which grabs the cards and determines what type they are
 function getCard(card) {
-  // Determine what the card is with if statement
+  //Determine what the card is with if statement
   // If cloze then is cloze card
   if (card.type === 'Cloze') {
     var selection = new ClozeCard(card.fullText, card.cloze)
     // Have to return a specific part so that cardInPlay is a simple message
-    console.log(selection.partial())
     return selection.partial()
   }
   else {
@@ -216,7 +215,11 @@ function getCard(card) {
 // Function to read the cards
 function readDeck(deck) {
   // A counter will be used to determine if all cards have been used
-  if (cardCounter < deck.length) {
+  if (deck.length === 0) {
+    console.log("\nThis deck is empty. Please create cards in this deck to use it.\n")
+    menu()
+  }
+  else if (cardCounter < deck.length) {
     // This variable grabs the current card
     var cardInPlay = getCard(deck[cardCounter])
     inquirer.prompt([
@@ -229,7 +232,7 @@ function readDeck(deck) {
       //Determine cloze card or basic card again for comparison
       // If cloze card, then do the following
       if (deck[cardCounter].cloze !== undefined) {
-        if (answer.question === deck[cardCounter].cloze) {
+        if (answer.question.toLowerCase() === deck[cardCounter].cloze.toLowerCase()) {
           console.log("You have answered correctly!")
           correct++
         }
@@ -241,7 +244,7 @@ function readDeck(deck) {
         }
       }
       else {
-        if (answer.question === deck[cardCounter].back) {
+        if (answer.question.toLowerCase() === deck[cardCounter].back.toLowerCase()) {
           console.log("You have answered correctly!")
           correct++
         }
@@ -255,10 +258,10 @@ function readDeck(deck) {
       readDeck(deck)
     });
   }
-  else {
+  else if (cardCounter === deck.length) {
     console.log("You have completed the full deck.")
-    console.log("You answered " + correct + " correctly.")
-    console.log("You answered " + incorrect + " incorrectly.")
+    console.log("You answered " + chalk.blue(correct) + " correctly.")
+    console.log("You answered " + chalk.blue(incorrect) + " incorrectly.")
     console.log("----------------------------------------------")
     console.log("Returning to the main menu.")
     correct = 0;
@@ -269,100 +272,126 @@ function readDeck(deck) {
 }
 // Function to show deck
 function showCards(deck) {
-  for (var x = 0; x < deck.length; x++) {   
-    var partial = getCard(deck[x])
-    // Determine cloze vs basic
-    // cloze case
-    if (deck[x].type === 'Cloze') {
-      console.log(chalk.bgBlack("-------------CLOZE CARD-------------"))
-      console.log(chalk.blue("Position in deck: ") + x )
-      console.log(chalk.bgBlack("------------Partial Text------------"))
-      console.log(chalk.blue(partial))
-      console.log(chalk.bgBlack("-------------Cloze Text-------------"))
-      console.log(chalk.blue(deck[x].cloze))
-      console.log(chalk.bgBlack("------------------------------------"))
-    }
-    // basic case
-    else {
-      console.log(chalk.bgBlack("-------------BASIC CARD-------------"))
-      console.log(chalk.blue("Position in deck: ") + x )
-      console.log(chalk.bgBlack("----------------FRONT---------------"))
-      console.log(chalk.blue(deck[x].front))
-      console.log(chalk.bgBlack("----------------BACK----------------"))
-      console.log(chalk.blue(deck[x].back))
-      console.log(chalk.bgBlack("------------------------------------"))
-    }
+  if (deck.length === 0) {
+    console.log("\nThis deck appears to be empty. Create cards to populate this deck.\n")
+    menu()
   }
-  inquirer.prompt([
-    {
-      "name": "next",
-      "message": "What would you like to do next?",
-      "type": "list",
-      "choices": ["Create a new card", "Delete a card from this deck", "Return to the main menu"]
+  else {
+    for (var x = 0; x < deck.length; x++) {   
+      var partial = getCard(deck[x])
+      // Determine cloze vs basic
+      // cloze case
+      if (deck[x].type === 'Cloze') {
+        console.log(chalk.bgBlack("-------------CLOZE CARD-------------"))
+        console.log(chalk.blue("Position in deck: ") + x )
+        console.log(chalk.bgBlack("------------Partial Text------------"))
+        console.log(chalk.blue(partial))
+        console.log(chalk.bgBlack("-------------Cloze Text-------------"))
+        console.log(chalk.blue(deck[x].cloze))
+        console.log(chalk.bgBlack("------------------------------------" + "\n"))
+      }
+      // basic case
+      else {
+        console.log(chalk.bgBlack("-------------BASIC CARD-------------"))
+        console.log(chalk.blue("Position in deck: ") + x )
+        console.log(chalk.bgBlack("----------------FRONT---------------"))
+        console.log(chalk.blue(deck[x].front))
+        console.log(chalk.bgBlack("----------------BACK----------------"))
+        console.log(chalk.blue(deck[x].back))
+        console.log(chalk.bgBlack("------------------------------------" + "\n"))
+      }
     }
-  ]).then(function(answer) {
-    switch (answer.next) {
-      case "Create a new card":
-        createCard();
-        break;
-      case "Delete a card from this deck":
-      inquirer.prompt([
-          {
-            "name": "toDelete",
-            "message": "Please input the position number of the card you would like to delete. This is denoted on each card.",
-            "type": "input"
-          } 
-        ]).then(function(answer) {
-          var tobeDeleted = deck[answer.toDelete]
-          deleteCard(deck, tobeDeleted)
-        })
-        
-        break;
-      case "Return to the main menu":
-        menu()
-        break;
-    }
-  })
+    inquirer.prompt([
+      {
+        "name": "next",
+        "message": "What would you like to do next?",
+        "type": "list",
+        "choices": ["Create a new card", "Delete a card from this deck", "Return to the main menu"]
+      }
+    ]).then(function(answer) {
+      switch (answer.next) {
+        case "Create a new card":
+          createCard();
+          break;
+        case "Delete a card from this deck":
+        inquirer.prompt([
+            {
+              "name": "toDelete",
+              "message": "Please input the position number of the card you would like to delete. This is denoted on each card.",
+              "type": "input"
+            } 
+          ]).then(function(answer) {
+            var index = answer.toDelete
+            deleteCard(deck, index)
+          })
+          
+          break;
+        case "Return to the main menu":
+          menu()
+          break;
+      }
+    })
+  }
 }
 
 // Function to delete a card
-function deleteCard(deck, card) {
-  deck.pop(card)
-  delete card
-  console.log("Your selected card has been deleted from the deck")
-  if (deck === basicJSON) {
-    fs.writeFile("./basic-cards.json", JSON.stringify(basicJSON, null, 2), function(err) {
-      if (err) {
-        console.log("Something went wrong: " + err)
-      }
-    })
+function deleteCard(deck, index) {
+  if (deck.length === 0) {
+    console.log("\nThis deck appears to be empty. Create cards to populate this deck.\n")
+    menu()
   }
   else {
-    fs.writeFile("./cloze-cards.json", JSON.stringify(clozeJSON, null, 2), function(err) {
-      if (err) {
-        console.log("Something went wrong: " + err)
+    
+    basicJSON = require('./basic-cards.json')
+    clozeJSON = require('./cloze-cards.json')
+    console.log("Your selected card has been deleted from the deck")
+    if (deck === basicJSON) {
+      console.log(basicJSON)
+      var toBeDeleted = basicJSON[index]
+      basicJSON.splice(toBeDeleted)
+      fs.writeFile("./basic-cards.json", JSON.stringify(basicJSON, null, 2), function(err) {
+        if (err) {
+          console.log("Something went wrong: " + err)
+        }
+      })
+    }
+    else if (deck === clozeJSON) {
+      console.log(clozeJSON)
+      clozeJSON.splice(clozeJSON[index])
+      fs.writeFile("./cloze-cards.json", JSON.stringify(clozeJSON, null, 2), function(err) {
+        if (err) {
+          console.log("Something went wrong: " + err)
+        }
+      })
+    }
+    inquirer.prompt([
+      {
+        "name": "next",
+        "message": "What would you like to do next?",
+        "type": "list",
+        "choices": ["Delete another card from this deck.", "Return to the main menu"]
+      }
+    ]).then(function(answer) {
+      switch (answer.next) {
+        case "Delete another card from this deck.":
+          inquirer.prompt([
+            {
+              "name": "toDelete",
+              "message": "Please input the position number of the card you would like to delete. This is denoted on each card.",
+              "type": "input"
+            }          
+          ]).then(function(answer) {
+            var index = answer.toDelete
+            console.log(index)
+            deleteCard(deck, index)
+          })
+          break;
+        case "Return to the main menu":
+          menu()
+          break;
       }
     })
   }
-  inquirer.prompt([
-    {
-      "name": "next",
-      "message": "What would you like to do next?",
-      "type": "list",
-      "choices": ["Create a new card", "Delete another card", "Return to the main menu"]
-    }
-  ]).then(function(answer) {
-    switch (answer.next) {
-      case "Create a new card":
-        createCard();
-        break;
-      case "Delete another card":
-        deleteCard()
-        break;
-      case "Return to the main menu":
-        menu()
-        break;
-    }
-  })
+  
 }
 
