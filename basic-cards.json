@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "type": "Basic",
+    "front": "This individual is famous for hosting the game show Jeopardy!",
+    "back": "Alex Trebek"
+  },
+  {
+    "type": "Basic",
+    "front": "This individual directed E.T.",
+    "back": "Steven Spielberg"
+  },
+  {
+    "type": "Basic",
+    "front": "Who was the 3rd President of the United States",
+    "back": "Thomas Jefferson"
+  }
+]

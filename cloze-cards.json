@@ -3,5 +3,15 @@
     "type": "Cloze",
     "fullText": "Kyle MachLachlan plays FBI Agent Dale Cooper in the 90s television series Twin Peaks.",
     "cloze": "Dale Cooper"
+  },
+  {
+    "type": "Cloze",
+    "fullText": "Barack Obama was the 44th President.",
+    "cloze": "Barack Obama"
+  },
+  {
+    "type": "Cloze",
+    "fullText": "Akira Kurosawa directed The Hidden Fortress",
+    "cloze": "Akira Kurosawa"
   }
 ]

@@ -7,7 +7,9 @@ var chalk = require('chalk')
 // Card decks
 var clozeJSON = require('./cloze-cards.json');
 var basicJSON = require('./basic-cards.json');
-var fullDeck = clozeJSON.concat(basicJSON)
+var fullDeck = basicJSON.concat(clozeJSON)
+console.log(fullDeck)
+console.log(fullDeck.length)
 
 
 // These variables must be global for the readDeck function to work
@@ -20,9 +22,10 @@ var incorrect = 0;
 // 1.) Create Cards --> DONE
 // 2.) Read card decks (full and individual) --> DONE
 // Program goals beyond that:
-// 1.) Ability to delete cards --> DONE
-// 2.) Ability to shuffle card deck
-// 3.) Ability to get a random card
+// 1.) Ability to delete cards --> Not working but i feel like im close
+// 2.) Ability to shuffle deck
+// 3.) Ability to select a random card
+
 
 // Program should first open a menu, then allow the user to select a list of options
 
@@ -53,7 +56,7 @@ function menu() {
         createCard()
         break;
       case chalk.blueBright("Test using the full deck"):
-        console.log("This deck will contain all cards, both basic and cloze. The deck has been shuffled.")
+        console.log("This deck will contain all cards, both basic and cloze.")
         readDeck(fullDeck)
       case chalk.blueBright("Test using basic cards"):
         console.log("This deck will contain only basic cards. Good luck!")
@@ -118,7 +121,13 @@ function createCard() {
         }
       ]).then(function(basicAnswers) {
         let newBasic = new BasicCard(basicAnswers.front, basicAnswers.back)
-        console.log("Here is your new card: " + "\nFront: " + newBasic.front + "\nBack: " + newBasic.back)
+        console.log("Here is your new card: " + "\n")
+        console.log(chalk.bgBlack("--------------------------BASIC CARD--------------------------"))
+        console.log(chalk.bgBlack("----------------------------FRONT-----------------------------"))
+        console.log(chalk.blue(newBasic.front))
+        console.log(chalk.bgBlack("-----------------------------BACK-----------------------------"))
+        console.log(chalk.blue(newBasic.back))
+        console.log(chalk.bgBlack("--------------------------------------------------------------" + "\n"))
         // Pushing this to the module basicJSON, still not sure how it works exactly, but it does!
         basicJSON.push(newBasic)
         // cannot use appendFile, have to use writeFile
@@ -161,7 +170,8 @@ function createCard() {
         }
       ]).then(function(clozeAnswers) {
         if (clozeAnswers.fullText.split(clozeAnswers.cloze)[1] === undefined) {
-          console.log(chalk.blue("Your cloze text was not found in the sentence. Please re-try and enter your cloze into the full text."))
+          console.log(chalk.blue(clozeAnswers.cloze + " was not found in " + clozeAnswers.fullText))
+          console.log(chalk.blue("Please re-try and enter your cloze into the full text."))
           console.log(chalk.blue("Returning you to the beginning of the process."))
           createCard()
         }
@@ -173,6 +183,14 @@ function createCard() {
               console.log("Something went wrong: " + err)
             }
           })
+          console.log("Here is your new card: " + "\n")
+          console.log(chalk.bgBlack("--------------------------CLOZE CARD--------------------------"))
+          console.log(chalk.bgBlack("-------------------------Partial Text-------------------------"))
+          console.log(chalk.blue(clozeAnswers.fullText))
+          console.log(chalk.bgBlack("--------------------------Cloze Text--------------------------"))
+          console.log(chalk.blue(clozeAnswers.cloze))
+          console.log(chalk.bgBlack("--------------------------------------------------------------" + "\n"))
+
           console.log("Your card has been logged.")
           // Now ask them what to do next
           inquirer.prompt([
@@ -259,7 +277,7 @@ function readDeck(deck) {
     });
   }
   else if (cardCounter === deck.length) {
-    console.log("You have completed the full deck.")
+    console.log("You have completed the entire deck.")
     console.log("You answered " + chalk.blue(correct) + " correctly.")
     console.log("You answered " + chalk.blue(incorrect) + " incorrectly.")
     console.log("----------------------------------------------")
@@ -282,13 +300,13 @@ function showCards(deck) {
       // Determine cloze vs basic
       // cloze case
       if (deck[x].type === 'Cloze') {
-        console.log(chalk.bgBlack("-------------CLOZE CARD-------------"))
+        console.log(chalk.bgBlack("--------------------------CLOZE CARD--------------------------"));
         console.log(chalk.blue("Position in deck: ") + x )
-        console.log(chalk.bgBlack("------------Partial Text------------"))
+        console.log(chalk.bgBlack("-------------------------Partial Text-------------------------"))
         console.log(chalk.blue(partial))
-        console.log(chalk.bgBlack("-------------Cloze Text-------------"))
+        console.log(chalk.bgBlack("--------------------------Cloze Text--------------------------"))
         console.log(chalk.blue(deck[x].cloze))
-        console.log(chalk.bgBlack("------------------------------------" + "\n"))
+        console.log(chalk.bgBlack("--------------------------------------------------------------" + "\n"))
       }
       // basic case
       else {
@@ -298,7 +316,7 @@ function showCards(deck) {
         console.log(chalk.blue(deck[x].front))
         console.log(chalk.bgBlack("----------------BACK----------------"))
         console.log(chalk.blue(deck[x].back))
-        console.log(chalk.bgBlack("------------------------------------" + "\n"))
+        console.log(chalk.bgBlack("--------------------------------------------------------------" + "\n"))
       }
     }
     inquirer.prompt([
@@ -341,9 +359,6 @@ function deleteCard(deck, index) {
     menu()
   }
   else {
-    
-    basicJSON = require('./basic-cards.json')
-    clozeJSON = require('./cloze-cards.json')
     console.log("Your selected card has been deleted from the deck")
     if (deck === basicJSON) {
       console.log(basicJSON)
