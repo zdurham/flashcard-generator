@@ -338,7 +338,7 @@ function showCards(deck) {
               "type": "input"
             } 
           ]).then(function(answer) {
-            var index = answer.toDelete
+            var index = parseInt(answer.toDelete)
             deleteCard(deck, index)
           })
           
@@ -358,11 +358,11 @@ function deleteCard(deck, index) {
     menu()
   }
   else {
+    console.log("Index to be deleted: ",index)
     console.log("Your selected card has been deleted from the deck")
     if (deck === basicJSON) {
-      console.log(basicJSON)
-      var toBeDeleted = basicJSON[index]
-      basicJSON.splice(toBeDeleted)
+      
+      basicJSON.splice(index, 1)
       fs.writeFile("./basic-cards.json", JSON.stringify(basicJSON, null, 2), function(err) {
         if (err) {
           console.log("Something went wrong: " + err)
@@ -371,7 +371,7 @@ function deleteCard(deck, index) {
     }
     else if (deck === clozeJSON) {
       console.log(clozeJSON)
-      clozeJSON.splice(clozeJSON[index])
+      clozeJSON.splice(index, 1)
       fs.writeFile("./cloze-cards.json", JSON.stringify(clozeJSON, null, 2), function(err) {
         if (err) {
           console.log("Something went wrong: " + err)
