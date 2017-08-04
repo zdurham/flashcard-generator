@@ -370,7 +370,6 @@ function deleteCard(deck, index) {
       })
     }
     else if (deck === clozeJSON) {
-      console.log(clozeJSON)
       clozeJSON.splice(index, 1)
       fs.writeFile("./cloze-cards.json", JSON.stringify(clozeJSON, null, 2), function(err) {
         if (err) {

@@ -8,5 +8,10 @@
     "type": "Basic",
     "front": "He was the 3rd President of the United States",
     "back": "Thomas Jefferson"
+  },
+  {
+    "type": "Basic",
+    "front": "Who created the Javascript language?",
+    "back": "Brendan Eich"
   }
 ]
